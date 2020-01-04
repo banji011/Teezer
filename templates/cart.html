@@ -1,0 +1,160 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
+	<div class="container">
+		<div class="row no-gutters slider-text align-items-center justify-content-center">
+			<div class="col-md-9 ftco-animate text-center">
+				<p class="breadcrumbs">
+					<span class="mr-2"><a href="index.html">Home</a></span>
+					<span>Cart</span>
+				</p>
+				<h1 class="mb-0 bread">My Cart</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section class="ftco-section ftco-cart">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 ftco-animate">
+				<div class="cart-list">
+					<table class="table">
+						<thead class="thead-primary">
+							<tr class="text-center">
+								<th>&nbsp;</th>
+								<th>&nbsp;</th>
+								<th>Product</th>
+								<th>Price</th>
+								<th>Quantity</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for order_item in object.item.all %}
+							<tr class="text-center">
+								<td class="product-remove">
+									<a href="{% url 'core:remove-from-cart' order_item.item.slug %}"><span
+											class="ion-ios-close"></span></a>
+								</td>
+
+								<td class="image-prod">
+									{% if order_item.item.itemimage_set.all %}
+									{% for object in order_item.item.itemimage_set.all  %}
+									<!-- <img class="img" src="{{object.main_image.url}}" alt=""> -->
+									<div class="img" style="background-image:url({{object.main_image.url}});"></div>
+									{% endfor %}
+									{% endif %}
+
+								</td>
+
+								<td class="product-name">
+									<h3>{{order_item.item.name}}</h3>
+									<p>{{order_item.item.description}}</p>
+								</td>
+								{% if order_item.item.discount_price %}
+								<td class="price">
+									${{order_item.item.discount_price}}
+									<br />
+									<span class="badge">(Original Price ${{order_item.item.price}} )
+									</span>
+								</td>
+								{% else %}
+								<td class="price">${{order_item.item.price}}</td>
+								{% endif %}
+
+								<td class="quantity">
+									<div class="input-group mb-3">
+										<div class="product-minus">
+											<a
+												href="{% url 'core:remove-single-item-from-cart' order_item.item.slug %} "><span
+													class="ion-ios-remove"></span></a>
+										</div>
+
+										<input type="text" name="quantity" class="quantity form-control input-number"
+											value="{{order_item.quantity}}" min="1" max="100" readonly />
+
+										<div class="product-add">
+											<a href="{% url 'core:add-single-item-from-cart' order_item.item.slug %}"><span
+													class="ion-ios-add"></span></a>
+										</div>
+									</div>
+								</td>
+								{% if order_item.item.discount_price %}
+								<td class="total">
+									${{ order_item.get_total_discount_item_price }} <br />
+									<span class="badge badge-primary">
+										Saving ${{order_item.get_amount_saved}}</span>
+								</td>
+								{% else %}
+								<td class="total">${{ order_item.get_total_item_price }}</td>
+								{% endif %}
+							</tr>
+
+							{% empty %}
+							<tr>
+								<td colspan="5">
+									Your cart is empty !
+								</td>
+								<div class="row justify-content-center">
+									<div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
+
+										<p class="text-center">
+											<a href="/" class="btn btn-primary py-1 px-4">Continue Shopping</a>
+										</p>
+
+									</div>
+								</div>
+							</tr>
+
+
+							{% endfor %}
+
+
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		{% if object.get_total %}
+		<div class="row justify-content-center">
+			<div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
+				<div class="cart-total mb-3">
+					<h3>Cart Totals</h3>
+					<!-- <p class="d-flex">
+						<span>Subtotal</span>
+						<span>${{object.get_total}} </span>
+					</p> -->
+					<!-- <p class="d-flex">
+						<span>Delivery</span>
+						<span>$0.00</span>
+					</p> -->
+					{% if object.coupon %}
+					<p class="d-flex">
+						<span>Coupon
+							<small class="badge badge-info">{{object.coupon.code}}</small>
+						</span>
+						<span>-${{object.coupon.amount}} </span>
+					</p>
+					{% endif %}
+					<hr />
+					<p class="d-flex total-price">
+						<span>Total</span>
+						<span>${{object.get_total}}</span>
+					</p>
+				</div>
+				<div class="container row">
+					<p class="text-center col">
+						<a href="/" class="btn btn-primary py-1 px-4">Continue Shopping</a>
+					</p>
+					<p class="text-center col">
+						<a href="{% url 'core:checkout' %}" class="btn btn-primary py-3 px-4s">Checkout</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs">
+                    <span class="mr-2"><a href="/">Home</a></span>
+
+                </p>
+                <h1 class="mb-0 bread">Request Refund </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section ftco-cart">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 ftco-animate">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button class="btn btn-primary py-3 px-4" type="submit"> Submit </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

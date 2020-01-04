@@ -1,0 +1,47 @@
+<div class="col-md-12 d-flex">
+    <div class="cart-detail cart-total bg-light p-3 p-md-4">
+        <h3 class="billing-heading mb-4">Cart Total</h3>
+        {% for order_item in order.item.all %}
+        <p class="d-flex">
+            <span>Subtotal</span>
+            <span>{{order_item.get_final_price}} </span>
+        </p>
+        {% endfor %}
+        <p class="d-flex">
+            <span>Delivery</span>
+            <span>$0.00</span>
+        </p>
+        {% if order.coupon %}
+        <p class="d-flex">
+            <span>Coupon
+                <small class="badge badge-info">{{order.coupon.code}} </small>
+            </span>
+            <span>-${{order.coupon.amount}}</span>
+        </p>
+        {% endif %}
+        <hr>
+        <p class="d-flex total-price">
+            <span>Total</span>
+            <span>{{order.get_total}}</span>
+        </p>
+
+
+    </div>
+</div>
+
+{% if DISPLAY_COUPON_FORM %}
+<div class="col-md-12 d-flex">
+    <div class="cart-detail cart-total bg-light p-3 p-md-4">
+        <form action="{% url 'core:add-coupon' %}" method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+                {{couponform.code}}
+                <div class="input-group-append">
+                    <button class="btn btn-primary py-1 px-4" type="submit">Redeem</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endif %}

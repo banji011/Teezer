@@ -1,0 +1,24 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+
+            </div>
+            <div class="modal-body">
+                <form class="navbar-form" action="/s/" role="search">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name='q' class="form-control" placeholder="Type in the name of product...">
+                    </div>
+                    <button type="submit" class="btn btn-black py-2 px-3">Submit</button>
+                </form>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
